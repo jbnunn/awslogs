@@ -207,7 +207,58 @@ class AWSLogs(object):
                     message = self.query_expression.search(parsed)
                     if not isinstance(message, six.string_types):
                         message = json.dumps(message)
-                output.append(message.rstrip())
+
+                if message.find('[ERROR]') >= 0:
+                    
+                    e, d, r, msg = message.rstrip().split("\t")
+                    msg = self.color(msg, 'red', ['reverse'])
+
+                    message = e + "\t" + d + "\t" + r + "\t" + msg
+
+                    output.append(
+                        self.color(
+                            message,
+                            'red'
+                        )
+                    )
+                elif message.find('[INFO]') >= 0:
+
+                    e, d, r, msg = message.rstrip().split("\t")
+                    msg = self.color(msg, 'green', ['reverse'])
+
+                    message = e + "\t" + d + "\t" + r + "\t" + msg
+
+                    output.append(
+                        self.color(
+                            message.rstrip(),
+                            'green'
+                        )
+                    )
+                elif message.find('START RequestId') >= 0:
+                    output.append(
+                        self.color(
+                            message.rstrip(),
+                            'blue'
+                        )
+                    )
+                elif message.find('END RequestId:') >= 0:
+                    output.append(
+                        self.color(
+                            message.rstrip(),
+                            'white',
+                            ['dark']
+                        )
+                    )
+                elif message.find('REPORT RequestId:') >= 0:
+                    output.append(
+                        self.color(
+                            message.rstrip(),
+                            'white',
+                            ['dark']
+                        )
+                    )
+                else:
+                    output.append(message.rstrip())
 
                 print(' '.join(output))
                 try:
@@ -263,10 +314,10 @@ class AWSLogs(object):
                         min(stream['lastIngestionTime'], window_end):
                     yield stream['logStreamName']
 
-    def color(self, text, color):
+    def color(self, text, color, attrs=[]):
         """Returns coloured version of ``text`` if ``color_enabled``."""
         if self.color_enabled:
-            return colored(text, color)
+            return colored(text, color, attrs=attrs)
         return text
 
     def parse_datetime(self, datetime_text):
