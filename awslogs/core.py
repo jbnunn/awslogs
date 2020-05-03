@@ -211,9 +211,9 @@ class AWSLogs(object):
                 if message.find('[ERROR]') >= 0:
                     
                     e, d, r, msg = message.rstrip().split("\t")
-                    msg = self.color(msg, 'red', ['reverse'])
+                    msg = self.color(msg, 'red')
 
-                    message = e + "\t" + d + "\t" + r + "\t" + msg
+                    message = self.color(e, 'red', ['reverse']) + "\t" + self.color(d, 'red') + "\t" + self.color(r, 'red') + "\t" + msg
 
                     output.append(
                         self.color(
@@ -224,9 +224,9 @@ class AWSLogs(object):
                 elif message.find('[INFO]') >= 0:
 
                     e, d, r, msg = message.rstrip().split("\t")
-                    msg = self.color(msg, 'green', ['reverse'])
+                    msg = self.color(msg, 'green')
 
-                    message = e + "\t" + d + "\t" + r + "\t" + msg
+                    message = self.color(e, 'green', ['reverse']) + "\t" + self.color(d, 'green') + "\t" + self.color(r, 'green') + "\t" + msg
 
                     output.append(
                         self.color(
@@ -234,6 +234,15 @@ class AWSLogs(object):
                             'green'
                         )
                     )
+                elif message.find('[DEBUG]') >= 0:
+
+                    e, d, r, msg = message.rstrip().split("\t")
+                    msg = self.color(msg, 'yellow')
+
+                    message = self.color(e, 'yellow', ['reverse']) + "\t" + self.color(d, 'yellow') + "\t" + self.color(r, 'yellow') + "\t" + msg
+
+                    output.append(message.rstrip())
+                    
                 elif message.find('START RequestId') >= 0:
                     output.append(
                         self.color(
