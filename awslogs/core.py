@@ -237,9 +237,9 @@ class AWSLogs(object):
                 elif message.find('[DEBUG]') >= 0:
 
                     e, d, r, msg = message.rstrip().split("\t")
-                    msg = self.color(msg, 'yellow')
+                    msg = self.color(msg, 'cyan')
 
-                    message = self.color(e, 'yellow', ['reverse']) + "\t" + self.color(d, 'yellow') + "\t" + self.color(r, 'yellow') + "\t" + msg
+                    message = self.color(e, 'cyan', ['reverse']) + "\t" + self.color(d, 'cyan') + "\t" + self.color(r, 'cyan') + "\t" + msg
 
                     output.append(message.rstrip())
                     
