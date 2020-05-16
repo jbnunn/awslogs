@@ -213,7 +213,7 @@ class AWSLogs(object):
                     e, d, r, msg = message.rstrip().split("\t")
                     msg = self.color(msg, 'red')
 
-                    message = self.color(e, 'red', ['reverse']) + "\t" + self.color(d, 'red') + "\t" + self.color(r, 'red') + "\t" + msg
+                    message = self.color(e, 'red', ['reverse']) + "\t" + msg
 
                     output.append(
                         self.color(
@@ -221,12 +221,12 @@ class AWSLogs(object):
                             'red'
                         )
                     )
-                elif message.find('[INFO]') >= 0:
+                elif message.find('[ INFO ]') >= 0:
 
                     e, d, r, msg = message.rstrip().split("\t")
                     msg = self.color(msg, 'green')
 
-                    message = self.color(e, 'green', ['reverse']) + "\t" + self.color(d, 'green') + "\t" + self.color(r, 'green') + "\t" + msg
+                    message = self.color(e, 'green', ['reverse']) + "\t" + msg
 
                     output.append(
                         self.color(
@@ -239,33 +239,39 @@ class AWSLogs(object):
                     e, d, r, msg = message.rstrip().split("\t")
                     msg = self.color(msg, 'cyan')
 
-                    message = self.color(e, 'cyan', ['reverse']) + "\t" + self.color(d, 'cyan') + "\t" + self.color(r, 'cyan') + "\t" + msg
+                    message = self.color(e, 'cyan', ['reverse']) + "\t" + msg
 
                     output.append(message.rstrip())
                     
                 elif message.find('START RequestId') >= 0:
-                    output.append(
-                        self.color(
-                            message.rstrip(),
-                            'blue'
-                        )
-                    )
+                    # I don't care about RequestIDs
+                    pass
+                    # output.append(
+                    #     self.color(
+                    #         message.rstrip(),
+                    #         'blue'
+                    #     )
+                    # )
                 elif message.find('END RequestId:') >= 0:
-                    output.append(
-                        self.color(
-                            message.rstrip(),
-                            'white',
-                            ['dark']
-                        )
-                    )
+                    # I don't care about RequestIDs
+                    pass
+                    # output.append(
+                    #     self.color(
+                    #         message.rstrip(),
+                    #         'white',
+                    #         ['dark']
+                    #     )
+                    # )
                 elif message.find('REPORT RequestId:') >= 0:
-                    output.append(
-                        self.color(
-                            message.rstrip(),
-                            'white',
-                            ['dark']
-                        )
-                    )
+                    # I don't care about RequestIDs
+                    pass
+                    # output.append(
+                    #     self.color(
+                    #         message.rstrip(),
+                    #         'white',
+                    #         ['dark']
+                    #     )
+                    # )
                 else:
                     output.append(message.rstrip())
 
