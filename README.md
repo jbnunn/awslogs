@@ -13,10 +13,46 @@ awslogs
 
 ``awslogs`` is a simple command line tool for querying groups, streams and events from `Amazon CloudWatch <http://aws.amazon.com/cloudwatch/>`_ logs.
 
-One of the most powerful features is to query events from several streams and consume them (ordered) in pseudo-realtime using your favourite tools such as ``grep``::
+## This version has been heavily modified from the original, [https://github.com/jorgebastida/awslogs/](https://github.com/jorgebastida/awslogs/). 
 
-    $ awslogs get /var/log/syslog ip-10-1.* --start='2h ago' | grep ERROR
 
+### Install and Run
+
+To run this version, install with
+
+```
+pip install .
+```
+
+Then, open a terminal and run the following to setup continuous monitoring of your logs for that function:
+
+```
+awslogs get /aws/lambda/<your-lambda-function-name> ALL --watch --aws-region <your-AWS-region> --no-stream --no-group
+```
+
+You can also specify `--profile` for specific AWS profiles. See **Original README** below for a complete list of options.
+
+### Logging statements
+
+The awslogs package shows any "log", "error", or "debug" lines set in your code. For example:
+
+* NodeJS:
+    * `console.log("...")`
+    * `console.error("...")`
+    * `console.debug("...")`
+
+* Python:
+    * `logger.log("...")`
+    * `logger.error("...")`
+    * `logger.debug("...")`
+
+### Demo
+
+Below is a screenshot of awslogs running along side Alexa's `ask dialog` command. Logs on the right were generated in code through `logger.log(...)`, etc., statements.
+
+![Screenshot](./awslogs-colored.png)
+
+## Original README
 
 Features
 --------
