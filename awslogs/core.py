@@ -18,18 +18,15 @@ from dateutil.tz import tzutc
 
 from . import exceptions
 
-
 COLOR_ENABLED = {
     'always': True,
     'never': False,
     'auto': sys.stdout.isatty(),
 }
 
-
 def milis2iso(milis):
     res = datetime.utcfromtimestamp(milis/1000.0).isoformat()
     return (res + ".000")[:23] + 'Z'
-
 
 def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_session_token, aws_region):
     core_session = botocore.session.get_session()
@@ -46,7 +43,6 @@ def boto3_client(aws_profile, aws_access_key_id, aws_secret_access_key, aws_sess
         aws_secret_access_key=aws_secret_access_key,
         aws_session_token=aws_session_token,
         region_name=aws_region)
-
 
 class AWSLogs(object):
 
@@ -181,8 +177,7 @@ class AWSLogs(object):
                 if self.output_stream_enabled:
                     output.append(
                         self.color(
-                            event['logStreamName'].ljust(max_stream_length,
-                                                         ' '),
+                            event['logStreamName'].ljust(max_stream_length, ' '),
                             'cyan'
                         )
                     )
@@ -219,9 +214,9 @@ class AWSLogs(object):
                         self.color(
                             message,
                             'red'
-                        )
+                        ).rstrip()
                     )
-                elif message.find('[ INFO ]') >= 0:
+                elif message.find('[INFO]') >= 0:
 
                     e, d, r, msg = message.rstrip().split("\t")
                     msg = self.color(msg, 'green')
@@ -232,7 +227,7 @@ class AWSLogs(object):
                         self.color(
                             message.rstrip(),
                             'green'
-                        )
+                        ).rstrip()
                     )
                 elif message.find('[DEBUG]') >= 0:
 
@@ -245,33 +240,13 @@ class AWSLogs(object):
                     
                 elif message.find('START RequestId') >= 0:
                     # I don't care about RequestIDs
-                    pass
-                    # output.append(
-                    #     self.color(
-                    #         message.rstrip(),
-                    #         'blue'
-                    #     )
-                    # )
+                    continue
                 elif message.find('END RequestId:') >= 0:
                     # I don't care about RequestIDs
-                    pass
-                    # output.append(
-                    #     self.color(
-                    #         message.rstrip(),
-                    #         'white',
-                    #         ['dark']
-                    #     )
-                    # )
+                    continue
                 elif message.find('REPORT RequestId:') >= 0:
                     # I don't care about RequestIDs
-                    pass
-                    # output.append(
-                    #     self.color(
-                    #         message.rstrip(),
-                    #         'white',
-                    #         ['dark']
-                    #     )
-                    # )
+                    continue
                 else:
                     output.append(message.rstrip())
 
